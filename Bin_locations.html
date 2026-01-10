@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bin Locations - Eco Rewards</title>
+    <style>
+        /* --- Shared Styles from Home.html --- */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f7faf7;
+            color: #333;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #168a45;
+            padding: 0 32px;
+            height: 76px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        @keyframes logoPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+        .logo-title img {
+            height: 44px;
+            width: 44px;
+            object-fit: contain;
+            animation: logoPulse 4s infinite ease-in-out;
+        }
+        .logo-title .title {
+            font-size: 1.6em;
+            color: #fff;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .nav-btns {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 9px 22px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            color: #fff;
+            transition: background 0.2s, color 0.2s;
+            border-radius: 20px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .nav-btn:hover, .nav-btn:focus {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .auth-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+        .auth-button {
+            border-radius: 20px;
+            padding: 9px 22px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+            border: 2px solid;
+            text-decoration: none;
+        }
+        .login-btn {
+            background: transparent;
+            color: #fff;
+            border-color: #fff;
+        }
+        .login-btn:hover {
+            background: #fff;
+            color: #168a45;
+        }
+        .logout-btn {
+            background: #fff;
+            color: #168a45;
+            border-color: #fff;
+        }
+        .dashboard-btn {
+            background: #fff;
+            color: #168a45;
+            border-color: #fff;
+        }
+
+        /* --- Bin Locations Specific Styles --- */
+        .content-container {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: calc(100vh - 212px); /* Adjust for header/footer height */
+        }
+
+        .page-title {
+            color: #168a45;
+            text-align: center;
+            font-size: 2.5em;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .tagline-sub {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin: 10px 0 40px 0;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .bin-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: all 0.3s ease-in-out;
+            border-left: 8px solid;
+        }
+
+        .status-red:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px 5px rgba(217, 83, 79, 0.3);
+        }
+        .status-yellow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px 5px rgba(240, 173, 78, 0.3);
+        }
+        .status-green:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px 5px rgba(92, 184, 92, 0.3);
+        }
+
+        .bin-location {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .bin-status {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            color: white;
+            margin-top: 15px;
+            font-size: 0.85em;
+            text-transform: uppercase;
+        }
+
+        .status-red { border-color: #d9534f; }
+        .status-red .bin-status { background-color: #d9534f; }
+
+        .status-yellow { border-color: #f0ad4e; }
+        .status-yellow .bin-status { background-color: #f0ad4e; }
+
+        .status-green { border-color: #5cb85c; }
+        .status-green .bin-status { background-color: #5cb85c; }
+
+        /* --- Footer Style --- */
+        .footer {
+            background-color: #168a45;
+            color: #eaffea;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+        }
+        .footer p { margin: 0; font-size: 0.95em; }
+
+        @media (max-width: 768px) {
+            .header { padding: 0 15px; }
+            .nav-btns { display: none; } /* Simplified for mobile in this view */
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo-title">
+            <img src="Logo.jpg" alt="Eco Rewards Logo">
+            <span class="title">Eco Rewards</span>
+        </div>
+        <nav class="nav-btns">
+            <a href="index.html" class="nav-btn">Home</a>
+            <a href="Services.html" class="nav-btn">Services</a>
+            <a href="Shop.html" class="nav-btn">Shop</a>
+            <a href="#" class="nav-btn">Bin Locations</a>
+            <a href="index.html#contact-section" class="nav-btn">Contact Us</a>
+        </nav>
+        
+        <div class="auth-wrapper">
+            <a href="dashboard.HTML" class="auth-button dashboard-btn" id="dashboard-button" style="display: none;">Dashboard</a>
+            <button class="auth-button login-btn" id="auth-button">Login</button>
+        </div>
+    </header>
+
+    <main class="content-container">
+        <h2 class="page-title">BIN LOCATIONS</h2>
+        <p class="tagline-sub">Locate our smart bins and help us build a greener neighborhood.</p>
+
+        <div class="grid-container" id="bin-grid">
+            </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Eco Rewards. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Authentication Logic (Shared with Home.html)
+        document.addEventListener("DOMContentLoaded", function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const authButton = document.getElementById('auth-button');
+            const dashboardButton = document.getElementById('dashboard-button');
+            
+            if (isLoggedIn === 'true') {
+                authButton.textContent = 'Logout';
+                authButton.classList.remove('login-btn');
+                authButton.classList.add('logout-btn');
+                authButton.onclick = function(e) {
+                    e.preventDefault(); 
+                    localStorage.removeItem('isLoggedIn');
+                    window.location.reload();
+                };
+                dashboardButton.style.display = 'inline-block';
+            } else {
+                authButton.textContent = 'Login';
+                authButton.onclick = function() {
+                    window.location.href='login.html';
+                };
+                dashboardButton.style.display = 'none';
+            }
+
+            // Render Bins
+            renderBinLocations();
+        });
+
+        // Bin Data and Rendering logic
+        const binData = [
+            { location: "Koramangala, 560034", status: "empty" },
+            { location: "Indiranagar, 560038", status: "full" },
+            { location: "Whitefield, 560066", status: "intermediate" },
+            { location: "Electronic City, 560100", status: "empty" },
+            { location: "Jayanagar, 560041", status: "intermediate" },
+            { location: "Malleshwaram, 560003", status: "full" },
+            { location: "HSR Layout, 560102", status: "empty" },
+            { location: "Basavanagudi, 560004", status: "full" },
+            { location: "Rajajinagar, 560010", status: "intermediate" },
+            { location: "Bannerghatta Road, 560076", status: "full" },
+        ];
+
+        function getStatusDetails(status) {
+            switch (status.toLowerCase()) {
+                case 'full':
+                    return { className: 'status-red', displayText: 'FULL' };
+                case 'intermediate':
+                    return { className: 'status-yellow', displayText: 'Intermediate (Partially Full)' };
+                case 'empty':
+                    return { className: 'status-green', displayText: 'Empty' };
+                default:
+                    return { className: 'status-red', displayText: 'Unknown Status' };
+            }
+        }
+
+        function renderBinLocations() {
+            const gridContainer = document.getElementById('bin-grid');
+            binData.forEach(bin => {
+                const details = getStatusDetails(bin.status);
+                const card = document.createElement('div');
+                card.className = `bin-card ${details.className}`;
+                card.innerHTML = `
+                    <div class="bin-location">${bin.location}</div>
+                    <p style="color: #777; margin: 5px 0;">Pincode: ${bin.location.split(', ')[1]}</p>
+                    <div class="bin-status">${details.displayText}</div>
+                `;
+                gridContainer.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+
